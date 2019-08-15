@@ -186,11 +186,13 @@ class CleanWebpackPlugin {
         if (this.cleanOnceBeforeBuildPatterns.length !== 0) {
             if (hooks) {
                 hooks.emit.tap('clean-webpack-plugin', (compilation) => {
+                    this.currentAssets = this.currentAssets.length > 0 ? this.currentAssets : this.baseKeys(compilation.asset);
                     this.handleInitial(compilation);
                 });
             } else {
                 compiler.plugin('emit', (compilation, callback) => {
                     try {
+                        this.currentAssets = this.currentAssets.length > 0 ? this.currentAssets : this.baseKeys(compilation.asset);
                         this.handleInitial(compilation);
 
                         callback();
@@ -210,6 +212,20 @@ class CleanWebpackPlugin {
                 this.handleDone(stats);
             });
         }
+    }
+  
+    /**
+     * Obejct.keys
+     * @param {object} object 
+     */
+    baseKeys(object: object): string[] {
+      var result = [];
+      for (var key in Object(object)) {
+        if (hasOwnProperty.call(object, key) && key != 'constructor') {
+          result.push(key);
+        }
+      }
+      return result;
     }
 
     /**
