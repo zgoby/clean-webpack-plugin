@@ -320,7 +320,7 @@ class CleanWebpackPlugin {
             const deleted = delSync(patterns, {
                 force: this.dangerouslyAllowCleanPatternsOutsideProject,
                 // Change context to build directory
-                // cwd: this.outputPath,
+                cwd: this.outputPath,
                 dryRun: this.dry,
                 dot: true,
                 ignore: this.protectWebpackAssets ? this.currentAssets : [],
